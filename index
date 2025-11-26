@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Belajar Web – Kelas Interaktif</title>
+  <meta name="description" content="Website pembelajaran responsif dengan materi, galeri foto, dan video, lengkap dengan profil pembuatnya." />
+
+  <style>
+    /* Judul */
+#materi h2 {
+  margin-bottom: 10px;
+}
+
+#materi h3 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+/* List utama (1,2,3) */
+.list-parent {
+  margin-left: 20px;
+  line-height: 1.7;
+}
+
+.list-parent > li {
+  margin-bottom: 15px;
+}
+
+/* Sub list (●) */
+.list-child {
+  list-style-type: disc;
+  margin-left: 20px;
+  margin-top: 6px;
+}
+
+/* Sub-sub list (–) */
+.list-sub {
+  list-style-type: square;
+  margin-left: 30px;
+  margin-top: 4px;
+}
+
+/* Jarak antar bullet */
+.list-child li,
+.list-sub li {
+  margin-bottom: 6px;
+}
+
+    :root {
+      --primary: #A2D2FF;
+      --secondary: #F8ABEB;
+      --accent: #FFC8DD;
+      --dark: #222222;
+      --light: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      min-height: 100vh;
+      color: var(--dark);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      background: rgba(255,255,255,0.7);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .navbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--dark);
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.95rem;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      transition: background 0.2s;
+    }
+
+    .nav-links a:hover {
+      background: var(--accent);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    /* LAYOUT */
+    main {
+      max-width: 1100px;
+      margin: 1rem auto 2rem;
+      padding: 0 1rem;
+    }
+
+    section {
+      background: rgba(255,255,255,0.88);
+      border-radius: 1.25rem;
+      padding: 1.75rem 1.6rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+    }
+
+    section h2 {
+      margin-bottom: 0.75rem;
+      font-size: 1.4rem;
+      color: var(--dark);
+    }
+
+    section p {
+      line-height: 1.6;
+      font-size: 0.98rem;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--dark);
+    }
+
+    .hero-text h1 {
+      font-size: 2rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .hero-text p {
+      margin-bottom: 1rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(255,255,255,0.9);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      margin-bottom: 0.8rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--dark);
+      color: var(--light);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 24px rgba(0,0,0,0.22);
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.9);
+      color: var(--dark);
+      border: 1px solid rgba(0,0,0,0.07);
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.9);
+      border-radius: 1.1rem;
+      padding: 1.2rem;
+      display: grid;
+      gap: 0.7rem;
+      font-size: 0.88rem;
+    }
+
+    .hero-card-tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat span {
+      display: block;
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .stat strong {
+      font-size: 1.1rem;
+    }
+
+    /* CREATOR */
+    .creator {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .creator-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 4px solid var(--primary);
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--dark);
+    }
+
+    .creator-info h3 {
+      margin-bottom: 0.2rem;
+    }
+
+    .creator-role {
+      font-size: 0.86rem;
+      opacity: 0.8;
+      margin-bottom: 0.6rem;
+    }
+
+    .creator-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.5rem 0 0.8rem;
+    }
+
+    .creator-badge {
+      font-size: 0.78rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .creator-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .creator-links a {
+      font-size: 0.84rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.04);
+    }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+      gap: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    .gallery-item {
+      border-radius: 0.9rem;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      background: #ddd;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      transition: transform 0.25s ease;
+    }
+
+    .gallery-item::after {
+      content: "Perbesar";
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.6rem;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.06);
+    }
+
+    .gallery-item:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* VIDEO */
+    .video-wrapper {
+      margin-top: 1rem;
+      position: relative;
+      padding-top: 56.25%; /* 16:9 */
+      border-radius: 1rem;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-wrapper iframe,
+    .video-wrapper video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      padding-bottom: 1.5rem;
+      color: rgba(0,0,0,0.7);
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s;
+      z-index: 200;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-inner {
+      max-width: 800px;
+      width: 100%;
+      border-radius: 1rem;
+      overflow: hidden;
+      background: #000;
+      position: relative;
+    }
+
+    .lightbox-inner img {
+      width: 100%;
+      display: block;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.8rem;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      width: 30px;
+      height: 30px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .creator {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+
+      .creator-avatar {
+        margin: 0 auto;
+      }
+
+      .navbar-inner {
+        flex-wrap: wrap;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 0.5rem;
+        display: none;
+        flex-direction: column;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 0.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="brand">Inovasi Kreativitas Seni dan <span>Budaya di SD Berbasis Digital</span></div>
+
+      <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+
+      <nav class="nav-links">
+        <a href="#hero">Beranda</a>
+        <a href="#materi">Materi</a>
+        <a href="#creator">Kreator</a>
+        <a href="#galeri">Galeri</a>
+        <a href="#video">Video</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+     <!-- CREATOR -->
+    <section id="creator">
+      <h2>Dosen Pengampu</h2>
+      <div class="creator">
+        <div class="creator-avatar">
+          <img src="dosen.jpg" alt="Foto Pembuat"> 
+          
+        </div>
+        <div class="creator-info">
+          <h3>Mansurdin, S.Sn, M.Hum</h3>
+         
+        </div>
+      </div> <br>
+      <h2>Mahasiswa</h2>
+      <div class="creator">
+        <div class="creator-avatar">
+          <img src="saya.jpg" alt="Foto Pembuat"> 
+          
+        </div>
+        <div class="creator-info">
+          <h3>Nur Azizah</h3>
+          <div class="creator-role">Nim 23354015</div>
+          
+
+          
+
+          <div class="creator-links">
+            
+            <a href="https://www.instagram.com/nr_aazizah21?igsh=MXVqbnoxcTVqNXBvNQ==" target="_blank" rel="noopener">Instagram</a>
+            <a href="nur23638@gmail.com">Email</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span>Tugas</span> • <span>MataKuliah</span>
+        </div>
+        <h1>Tradisi “Berkaul” (Bakaua)</h1>
+        <p>
+          Tradisi Berkaul (Bakaua) di Talawi, Kota Sawahlunto, Sumatera Barat, adalah warisan leluhur yang dilaksanakan secara turun-temurun sebagai wujud syukur atas hasil panen dan untuk memohon keberkahan untuk masa tanam berikutnya.
+        </p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" onclick="scrollToSection('materi')">
+            Mulai Belajar
+          </button>
+          <button class="btn btn-ghost" onclick="scrollToSection('video')">
+            Tonton Video
+          </button>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="Highlight Kelas">
+        <span class="hero-card-tag">Sejarah Singkat</span>
+        <p>
+          Tradisi Bakaua berakar kuat dalam budaya agraris masyarakat Minangkabau, khususnya di daerah-daerah yang mengandalkan pertanian sawah sebagai mata pencaharian utama, seperti di Talawi. Meskipun waktu pasti dimulainya tradisi ini sulit ditelusuri, praktiknya telah berlangsung selama beberapa generasi dan menjadi bagian integral dari siklus pertanian dan kehidupan sosial masyarakat setempat.
+        </p>
+        <div class="hero-stats">
+          
+         
+        </div>
+      </aside>
+    </section>
+
+   <!-- MATERI -->
+<section id="materi">
+  <h2>Materi Pembelajaran</h2>
+  <h3>Sejarah Berkaul (Bakaua)</h3>
+
+  <ol class="list-parent">
+    <!-- 1. PENGERTIAN -->
+    <li>
+      <strong>Pengertian &amp; Asal-Usul Tradisi Berkaul</strong>
+      <ul class="list-child">
+        <li>Berkaul (Bakaua) adalah tradisi Minangkabau yang lahir dari hubungan erat masyarakat dengan alam dan pertanian.</li>
+        <li>Muncul karena kesadaran leluhur bahwa keberhasilan panen dipengaruhi cuaca, air, dan kesuburan tanah.</li>
+        <li>Tradisi ini dilakukan sebagai doa, harapan, dan permohonan keselamatan agar musim tanam hingga panen berjalan lancar.</li>
+        <li>Di Talawi (Sawahlunto), Berkaul dikenal sebagai “turun ke sawah” dan memiliki fungsi tambahan sebagai ritual tolak bala.</li>
+      </ul>
+    </li>
+
+    <!-- 2. PRAKTIK DI TALAWI -->
+    <li>
+      <strong>Praktik Berkaul di Talawi</strong>
+      <ul class="list-child">
+        <li>Bagi masyarakat Talawi Hilie, Berkaul adalah perpaduan antara adat, agama, dan kebersamaan.</li>
+        <li>Rangkaian kegiatan dalam Berkaul:</li>
+        <ul class="list-sub">
+          <li>Musyawarah adat (kecil, menengah, besar).</li>
+          <li>Penyembelihan hewan, biasanya kambing.</li>
+          <li>Doa tolak bala dan pembacaan basanji.</li>
+          <li>Pelaksanaan pasambahan adat.</li>
+          <li>Makan bersama (bajamba) sebagai penutup.</li>
+        </ul>
+      </ul>
+    </li>
+
+    <!-- 3. NILAI & KEARIFAN LOKAL -->
+    <li>
+      <strong>Nilai &amp; Kearifan Lokal Tradisi Berkaul</strong>
+      <ul class="list-child">
+        <li><strong>a. Nilai Spiritual</strong></li>
+        <ul class="list-sub">
+          <li>Wujud rasa syukur kepada Allah SWT.</li>
+          <li>Permohonan berkah untuk sawah, tanaman, dan masyarakat.</li>
+        </ul>
+
+        <li><strong>b. Nilai Sosial</strong></li>
+        <ul class="list-sub">
+          <li>Menguatkan solidaritas dan kebersamaan warga.</li>
+          <li>Menghidupkan semangat gotong royong dalam persiapan dan pelaksanaan acara.</li>
+          <li>Tradisi bajamba mempererat hubungan antarwarga.</li>
+        </ul>
+
+        <li><strong>c. Nilai Perlindungan (Tolak Bala)</strong></li>
+        <ul class="list-sub">
+          <li>Permohonan perlindungan dari marabahaya, penyakit, dan kegagalan panen.</li>
+          <li>Dipercaya sebagai penjaga keselamatan nagari melalui doa bersama.</li>
+        </ul>
+
+        <li><strong>d. Nilai Pelestarian Budaya</strong></li>
+        <ul class="list-sub">
+          <li>Termasuk pusako leluhur yang diwariskan turun-temurun.</li>
+          <li>Menjadi bagian penting identitas budaya Talawi dan Minangkabau.</li>
+        </ul>
+      </ul>
+    </li>
+
+    <!-- 4. TAHAPAN PELAKSANAAN -->
+    <li>
+      <strong>Tahapan Pelaksanaan Berkaul</strong>
+      <ul class="list-child">
+        <li><strong>Musyawarah Adat</strong>
+          <ul class="list-sub">
+            <li>Dilakukan dalam beberapa tahap: kecil, menengah, dan besar.</li>
+            <li>Dihadiri ninik mamak, alim ulama, tokoh adat, dan masyarakat tani.</li>
+          </ul>
+        </li>
+
+        <li><strong>Pengundangan &amp; Persiapan</strong>
+          <ul class="list-sub">
+            <li>Undangan disebarkan kepada warga nagari.</li>
+            <li>Hewan (biasanya kambing) disiapkan untuk disembelih.</li>
+          </ul>
+        </li>
+
+        <li><strong>Acara Utama</strong>
+          <ul class="list-sub">
+            <li>Penyembelihan hewan sebagai awal ritual.</li>
+            <li>Pembacaan doa tolak bala dan basanji.</li>
+            <li>Pelaksanaan pasambahan adat.</li>
+            <li>Ditutup dengan makan bersama (bajamba).</li>
+          </ul>
+        </li>
+
+        <li><strong>Penutup</strong>
+          <ul class="list-sub">
+            <li>Doa bersama sebagai harapan keberhasilan panen dan keselamatan nagari.</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <!-- 5. PERKEMBANGAN & TANTANGAN -->
+    <li>
+      <strong>Perkembangan &amp; Tantangan Tradisi Berkaul</strong>
+      <ul class="list-child">
+        <li>Modernisasi membuat sebagian generasi muda mulai melupakan makna tradisi.</li>
+        <li>Upaya pelestarian terus dilakukan melalui:
+          <ul class="list-sub">
+            <li>Festival Budaya BaTaFa (Budaya Adat Talawi Festival).</li>
+            <li>Keterlibatan komunitas adat dan pemerintah nagari.</li>
+          </ul>
+        </li>
+        <li>Pada masa pandemi COVID-19, rangkaian acara dipangkas, namun nilai inti seperti doa dan musyawarah tetap dipertahankan.</li>
+      </ul>
+    </li>
+
+    <!-- 6. SIGNIFIKANSI -->
+    <li>
+      <strong>Signifikansi Tradisi Berkaul bagi Masyarakat Talawi</strong>
+      <ul class="list-child">
+        <li>Menjadi simbol hubungan harmonis manusia dengan alam.</li>
+        <li>Mewujudkan rasa syukur serta permohonan kepada Tuhan.</li>
+        <li>Memperkuat persaudaraan dan solidaritas sosial.</li>
+        <li>Menjadi ciri khas budaya lokal yang berpotensi dikembangkan menjadi wisata budaya.</li>
+        <li>Berfungsi sebagai warisan penting yang harus dijaga oleh generasi mendatang.</li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+
+
+<!-- MATERI -->
+<section id="materi">
+  <h2>Beberapa Cara Pelestarian Tradisi Berkaul</h2>
+  
+
+  <ol class="list-parent">
+    
+    <li>
+      <strong>Pendidikan Adat di Sekolah</strong>
+      <ul class="list-child">
+        Tradisi Berkaul perlu diperkenalkan sejak dini melalui materi muatan lokal, kunjungan budaya, atau praktik lapangan agar anak-anak dan remaja memahami maknanya secara langsung.
+      </ul>
+    </li>
+
+    
+    <li>
+      <strong>Dokumentasi dan Digitalisasi Tradisi</strong>
+      <ul class="list-child">
+        Pemerintah desa bersama generasi muda dapat membuat dokumentasi video, buku kecil, atau arsip digital tentang sejarah, rangkaian acara, dan nilai Berkaul agar tidak hilang di masa depan.
+      </ul>
+    </li>
+
+    <!-- 3. NILAI & KEARIFAN LOKAL -->
+    <li>
+      <strong>Pemberdayaan Generasi Muda</strong>
+      <ul class="list-child">
+        Anak muda Talawi perlu diberi peran langsung dalam setiap acara, seperti menjadi panitia, pembawa acara, bagian kesenian, atau penggerak sosialisasi budaya.
+      </ul>
+    </li>
+
+    <!-- 4. TAHAPAN PELAKSANAAN -->
+    <li>
+      <strong>Penguatan Festival Budaya (BaTaFa)</strong>
+      <ul class="list-child">
+        
+            Festival budaya perlu terus diselenggarakan setiap tahun dengan menambah kegiatan edukatif sehingga masyarakat luar semakin mengenal adat Talawi.
+          
+      </ul>
+    </li>
+
+    <!-- 5. PERKEMBANGAN & TANTANGAN -->
+    <li>
+      <strong>Kolaborasi Pemerintah–Adat–Masyarakat</strong>
+      <ul class="list-child">
+        Pelestarian tradisi tidak bisa hanya bertumpu pada tokoh adat, tetapi perlu dukungan anggaran, kebijakan, dan ruang dari pemerintah daerah.
+
+      </ul>
+    </li>
+
+    <!-- 6. SIGNIFIKANSI -->
+    <li>
+      <strong>Pengusulan sebagai Warisan Budaya Takbenda (WBTb)</strong>
+      <ul class="list-child">
+        Tradisi Berkaul dapat diusulkan sebagai WBTb tingkat kota atau provinsi agar mendapatkan perlindungan hukum dan perhatian resmi untuk pengembangan dan pelestariannya.
+
+      </ul>
+    </li>
+  </ol>
+</section>
+
+
+   
+
+    <!-- GALERI -->
+    <section id="galeri">
+      <h2>Proses Acara Bakaua (Berkaul)</h2>
+      <p>
+        Galeri ini berisi dokumentasi proses acara bakaua yang dilakukan masyarakat di desa talawi hilie, kota sawahlunto.
+      </p>
+
+      <div class="gallery-grid">
+        <!-- Ganti src dengan foto kamu sendiri -->
+        <div class="gallery-item" data-full="https://www.jejakkasus.co.id/wp-content/uploads/2022/03/faiza.jpg">
+          <img src="https://www.jejakkasus.co.id/wp-content/uploads/2022/03/faiza.jpg" alt="Belajar di depan laptop" />
+        </div>
+
+        <div class="gallery-item" data-full="https://talawihilir.desa.id/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-02-at-18.36.14.jpeg">
+          <img src="https://talawihilir.desa.id/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-02-at-18.36.14.jpeg" alt="Menulis catatan pemrograman" />
+        </div>
+
+        <div class="gallery-item" data-full="https://talawihilir.desa.id/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-02-at-18.36.14-2.jpeg">
+          <img src="https://talawihilir.desa.id/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-02-at-18.36.14-2.jpeg" alt="Diskusi kelompok belajar" />
+        </div>
+
+        <div class="gallery-item" data-full="https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg">
+          <img src="https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Desain antarmuka di layar" />
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section id="video">
+      <h2>Video Pembelajaran</h2>
+      <p>
+        Berikut ini merupakan video dokumentasi dari acara berkaul atau bakaua 
+      </p>
+
+      <div class="video-wrapper">
+        <!-- Opsi 1: YouTube embed -->
+        <!--<iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/ZyOXIrzR-6U?si=4ES6p20G9OfcuNEu"
+    title="Contoh Video Pembelajaran HTML"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe> -->
+
+        
+        <!--Opsi 2: Video lokal, kalau mau pakai file sendiri-->
+        <video controls>
+          <source src="video.mp4" type="video/mp4">
+          Browser Anda tidak mendukung pemutaran video.
+        </video>
+        
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> Website Pembelajaran Inovasi Kreativitas Seni dan Budaya di SD Berbasis Digital
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" aria-label="Tutup">&times;</button>
+      <img src="" alt="Foto pembelajaran" id="lightbox-img" />
+    </div>
+  </div>
+
+  <script>
+    // Tahun otomatis di footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Smooth scroll ke section
+    function scrollToSection(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+      window.scrollTo({
+        top: target.offsetTop - 70,
+        behavior: "smooth",
+      });
+    }
+
+    // Klik menu nav -> scroll halus
+    document.querySelectorAll(".nav-links a").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const href = link.getAttribute("href").replace("#", "");
+        scrollToSection(href);
+        // Tutup menu di mobile
+        document.querySelector(".nav-links").classList.remove("open");
+      });
+    });
+
+    // Toggle menu di mobile
+    const navToggle = document.querySelector(".nav-toggle");
+    const navLinks = document.querySelector(".nav-links");
+
+    navToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+    // Lightbox galeri
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const lightboxClose = document.querySelector(".lightbox-close");
+
+    document.querySelectorAll(".gallery-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const full = item.getAttribute("data-full");
+        lightboxImg.src = full;
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+
+    lightboxClose.addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.classList.contains("open")) {
+        closeLightbox();
+      }
+    });
+  </script>
+</body>
+</html>
